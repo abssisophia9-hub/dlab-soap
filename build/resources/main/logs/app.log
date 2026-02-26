@@ -1,0 +1,16 @@
+2024-03-01 08:00:01 INFO  Application started
+2024-03-01 08:00:04 INFO  Database connection established
+2024-03-01 08:03:42 DEBUG Processing request GET /api/users
+2024-03-01 08:05:00 WARN  Connection pool usage at 80%
+2024-03-01 08:07:11 ERROR Database connection lost: timeout after 30s
+2024-03-01 08:07:17 INFO  Database connection re-established
+2024-03-01 08:15:30 WARN  Slow query detected 2340ms
+2024-03-01 08:20:45 ERROR NullPointerException in UserService.getById
+2024-03-01 08:30:00 INFO  Health check passed
+2024-03-01 08:35:19 ERROR Database connection lost: timeout after 30s
+2024-03-01 09:00:00 INFO  Health check passed
+2024-03-01 09:25:00 ERROR NullPointerException in UserService.getById
+2024-03-01 10:05:00 ERROR Disk usage exceeded 90%
+2024-03-01 11:00:00 INFO  Health check passed
+2024-03-01 12:00:00 INFO  Health check passed
+2024-03-01 23:59:59 INFO  Application shutting down

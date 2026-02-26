@@ -1,0 +1,62 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+group   = 'ma.aui.sse.paradigms.integration.xs'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'com.sun.xml.ws:jaxws-rt:4.0.2'
+    implementation 'com.sun.xml.ws:jaxws-tools:4.0.2'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
+
+application {
+    mainClass = 'ma.aui.sse.paradigms.integration.xs.provider.Provider'
+}
+
+sourceSets {
+    main {
+        java {
+            exclude '**/consumer/**'
+        }
+    }
+}
+
+task runConsumer(type: JavaExec) {
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'ma.aui.sse.paradigms.integration.xs.loganalysis.consumer.Consumer'
+}
+
+task wsgen(type: JavaExec, dependsOn: build) {
+    classpath = configurations.runtimeClasspath + sourceSets.main.output
+    mainClass = 'com.sun.tools.ws.WsGen'
+    args = [
+        '-wsdl',
+        '-cp', sourceSets.main.output.classesDirs.asPath,
+        '-d',  sourceSets.main.output.classesDirs.asPath.tokenize(File.pathSeparator)[0],
+        '-r',  'src/main/resources',
+        'ma.aui.sse.paradigms.integration.xs.loganalysis.provider.LogAnalyzer'
+    ]
+}
+
+task wsimport(type: JavaExec) {
+    classpath = configurations.runtimeClasspath + sourceSets.main.output
+    mainClass = 'com.sun.tools.ws.WsImport'
+    args = [
+        '-p', 'ma.aui.sse.paradigms.integration.xs.loganalysis.consumer.stub',
+        '-d',  sourceSets.main.output.classesDirs.asPath.tokenize(File.pathSeparator)[0],
+        '-keep',
+        '-s', 'src/main/java',
+        'src/main/resources/LogAnalyzerService.wsdl'
+    ]
+}

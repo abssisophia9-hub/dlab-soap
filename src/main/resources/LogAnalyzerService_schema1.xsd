@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema version="1.0" targetNamespace="http://provider.loganalysis.xs.integration.paradigms.sse.aui.ma/" xmlns:tns="http://provider.loganalysis.xs.integration.paradigms.sse.aui.ma/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="countByStatus" type="tns:countByStatus"/>
+
+  <xs:element name="countByStatusResponse" type="tns:countByStatusResponse"/>
+
+  <xs:element name="filterByLevel" type="tns:filterByLevel"/>
+
+  <xs:element name="filterByLevelResponse" type="tns:filterByLevelResponse"/>
+
+  <xs:complexType name="countByStatus">
+    <xs:sequence>
+      <xs:element name="arg0" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="countByStatusResponse">
+    <xs:sequence>
+      <xs:element name="return" type="tns:statusCount" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="statusCount">
+    <xs:sequence>
+      <xs:element name="debugCount" type="xs:int"/>
+      <xs:element name="errorCount" type="xs:int"/>
+      <xs:element name="infoCount" type="xs:int"/>
+      <xs:element name="warnCount" type="xs:int"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="filterByLevel">
+    <xs:sequence>
+      <xs:element name="arg0" type="xs:string" minOccurs="0"/>
+      <xs:element name="arg1" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="filterByLevelResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:string" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
+
