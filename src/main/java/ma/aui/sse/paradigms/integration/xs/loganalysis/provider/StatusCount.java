@@ -1,30 +1,33 @@
-package ma.aui.sse.paradigms.integration.xs.loganalysis.provider;
+package loganalyzer.provider;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement   // this is for informing JAXB this is a serializable XML element
 public class StatusCount {
-
-    private int errorCount;
-    private int warnCount;
-    private int infoCount;
-    private int debugCount;
+    private String status;
+    private int count;
 
     public StatusCount() {}
 
-    public StatusCount(int errorCount, int warnCount, int infoCount, int debugCount) {
-        this.errorCount = errorCount;
-        this.warnCount = warnCount;
-        this.infoCount = infoCount;
-        this.debugCount = debugCount;
+    public StatusCount(String status, int count) {
+        this.status = status;
+        this.count = count;
     }
 
-    public int getErrorCount() { return errorCount; }
-    public void setErrorCount(int errorCount) { this.errorCount = errorCount; }
 
-    public int getWarnCount() { return warnCount; }
-    public void setWarnCount(int warnCount) { this.warnCount = warnCount; }
+    public String getStatus() {
+        return status;
+    }
 
-    public int getInfoCount() { return infoCount; }
-    public void setInfoCount(int infoCount) { this.infoCount = infoCount; }
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
-    public int getDebugCount() { return debugCount; }
-    public void setDebugCount(int debugCount) { this.debugCount = debugCount; }
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
 }
