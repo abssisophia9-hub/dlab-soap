@@ -1,15 +1,12 @@
 from zeep import Client
 
-client = Client("http://localhost:9000/loganalyzer?wsdl")
+client = Client('../resources/LogAnalyzerService.wsdl').service
 logFile = "src/main/resources/logs/app.log"
 
-count = client.service.countByStatus(arg0=logFile)
-print("ERROR:", count["errorCount"])
-print("WARN: ", count["warnCount"])
-print("INFO: ", count["infoCount"])
-print("DEBUG:", count["debugCount"])
+print("Analyzing access log file...")
 
-lines = client.service.filterByLevel(arg0=logFile, arg1="ERROR")
-print("\nERROR lines:")
-for line in (lines or []):
-    print(" ", line)
+count = loganalyzer.count()
+print("Status Code Counts:", count)
+
+distribution = loganalyzer.getDistribution()
+print("Status Code Distribution:", distribution)
