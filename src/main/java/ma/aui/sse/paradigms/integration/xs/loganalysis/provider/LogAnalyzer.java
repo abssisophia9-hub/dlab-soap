@@ -1,40 +1,67 @@
-package ma.aui.sse.paradigms.integration.xs.loganalysis.provider;
+package loganalyzer.provider;
 
-import jakarta.jws.WebService;
+import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.List;
+
+import javax.jws.WebMethod;
+import javax.jws.WebService;
+import java.util.*;
 
 @WebService
 public class LogAnalyzer {
 
-    public StatusCount countByStatus(String filePath) {
-        List<String> lines = readFile(filePath);
-        int error = 0, warn = 0, info = 0, debug = 0;
-        for (String line : lines) {
-            if (line.contains("ERROR")) error++;
-            else if (line.contains("WARN")) warn++;
-            else if (line.contains("INFO")) info++;
-            else if (line.contains("DEBUG")) debug++;
-        }
-        return new StatusCount(error, warn, info, debug);
-    }
+    @WebMethod
+    public Integer count() {
 
-    public String[] filterByLevel(String filePath, String level) {
-        List<String> lines = readFile(filePath);
-        List<String> result = new ArrayList<>();
-        for (String line : lines) {
-            if (line.contains(level.toUpperCase())) result.add(line);
-        }
-        return result.toArray(new String[0]);
-    }
+        this.log("Count method has been invoked");
 
-    private List<String> readFile(String filePath) {
+        Path filePath = Paths.get("src/main/resources/access-log.txt");
+        int lineCount = 0;
         try {
-            return Files.readAllLines(Paths.get(filePath));
-        } catch (Exception e) {
-            throw new RuntimeException("Cannot read file: " + filePath);
+            lineCount = (int) Files.lines(filePath).count();
+        } catch (IOException e) {
+            System.err.println("Error reading file: " + e.getMessage());
         }
+
+        return lineCount;
+    }
+
+    @WebMethod
+    public List<StatusCount> getDistribution() {
+
+        this.log("GetDistribution method has been invoked");
+
+        List<StatusCount> result = new ArrayList<>();
+        Path filePath = Paths.get("src/main/resources/access-log.txt");
+
+        try {
+            Files.lines(filePath).forEach(line -> {
+                String[] parts = line.split(" ");
+                if (parts.length >= 2) {
+                    String statusCode = parts[parts.length - 2];
+
+                    Optional<StatusCount> existing = result.stream()
+                            .filter(sc -> sc.getStatus().equals(statusCode))
+                            .findFirst();
+
+                    if (existing.isPresent()) {
+                        existing.get().setCount(existing.get().getCount() + 1);
+                    } else {
+                        result.add(new StatusCount(statusCode, 1));
+                    }
+                }
+            });
+        } catch (IOException e) {
+            System.err.println("Error reading file: " + e.getMessage());
+        }
+
+        return result;
+    }
+
+    public void log(String message) {
+        System.out.println("LogAnalyzer: " + message);
     }
 }
