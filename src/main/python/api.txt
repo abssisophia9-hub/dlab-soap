@@ -1,0 +1,10 @@
+public interface LogAnalyzer {
+    Integer count();
+    List<StatusCount> getDistribution();
+}
+
+// Data Transfer Object
+public class StatusCount {
+    String status;
+    int count;
+}
